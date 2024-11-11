@@ -1,4 +1,4 @@
-const API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
+const API_KEY = 'AIzaSyDOKLqgWgLrCl1h-esGSLC7HCQWMYrlsoU';
 
 
 function getBase64Image(img) {
@@ -76,4 +76,12 @@ function recognizeText(img) {
 }
 
 const img = document.getElementById('imgcode');
-if (img) recognizeText(img)
+if (img) {
+    if(img.complete){
+        recognizeText(img);
+    }else{
+        img.addEventListener('load', () => {
+            recognizeText(img);
+        });
+    }   
+}
