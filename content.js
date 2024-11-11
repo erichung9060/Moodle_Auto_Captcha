@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyDOKLqgWgLrCl1h-esGSLC7HCQWMYrlsoU';
+const API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
 
 
 function getBase64Image(img) {
