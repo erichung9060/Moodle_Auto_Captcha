@@ -7,3 +7,15 @@
 2. Load the extension into Chrome via `chrome://extensions/`.
 3. Navigate to the Moodle login page, and the verification code will be automatically filled in automatically.
 <img width="1454" alt="image" src="https://github.com/user-attachments/assets/53e71d61-ffe2-4e8c-bcfb-19bb7bf75ea8">
+
+## Gemini vs. Google Cloud Vision
+
+### Gemini
+- Simple to create an API key
+- Slower respone time
+- More accurate
+
+### Google Cloud Vision
+- Complex to create an API key
+- Faster respone time
+- Possible incorrect answers
