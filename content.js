@@ -1,4 +1,4 @@
-// ----------------------configuration-----------------------------
+// ----------------------configuration------------------------------
 const Gemini_API_KEY = 'Your_Gooele_Gemini_API_Key';
 const Cloud_Vision_API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
 // -----------------------------------------------------------------
