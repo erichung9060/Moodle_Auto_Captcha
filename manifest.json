@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "version": "1.0",
-    "name": "Moodle Auto Verify",
-    "description": "Automatically fill in verification code",
+    "name": "Moodle Auto Captcha",
+    "description": "Automatically fill in the verification code",
     "content_scripts": [
         {
             "matches": [
