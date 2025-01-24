@@ -62,17 +62,8 @@ async function recognize_captcha_by_Cloud_Vision_API(img) {
     const data = await response.json();
     console.log(data)
 
-    let Verification_Code = '';
-    const recognizedText = data.responses[0].textAnnotations[0]?.description;
-    const lines = recognizedText.split('\n');
-    for (const line of lines) {
-        Verification_Code = line.match(/\d+/g).join('');
-        if (Verification_Code.length == 4) break;
-    }
-
-    if (Verification_Code.length != 4) {
-        Verification_Code = recognizedText.match(/\d+/g).join('');
-    }
+    const recognizedText = data.responses[0].fullTextAnnotation.text;
+    const Verification_Code = recognizedText.replace(/[^a-zA-Z0-9]/g, '');
     
     return Verification_Code
 }
@@ -109,7 +100,7 @@ async function recognize_captcha_by_Gemini(img) {
     const data = await response.json();
     console.log(data)
 
-    let Verification_Code = data.candidates[0].content.parts[0].text.trim()
+    const Verification_Code = data.candidates[0].content.parts[0].text.trim()
     return Verification_Code
 }
 
