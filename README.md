@@ -1,6 +1,6 @@
 # Moodle_Auto_Captcha
 
-#### This is an Chrome extension, it helps you fill in the verification code when you logging into [Moodle](https://moodle.ncku.edu.tw/).
+#### This is an Chrome extension, it helps you fill in the verification code when you logging into the [Moodle](https://moodle.ncku.edu.tw/).
 -------------------------------
 ## How to use
 1. Create an API key from either the [Gemini](https://aistudio.google.com) or the [Google Cloud Vision](https://cloud.google.com/vision) (choose only one) and paste it into the configuration area in content.js.
