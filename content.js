@@ -5,10 +5,31 @@ const Cloud_Vision_API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
 
 function getBase64Image(img) {
     const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
+    const width = 800; // Resize width
+    const aspectRatio = img.height / img.width; // Maintain aspect ratio
+    const height = width * aspectRatio;
+
+    canvas.width = width;
+    canvas.height = height;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
+
+    // Draw the resized image
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // Apply sharpening filter (simple unsharp mask simulation)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        // Example of sharpening (basic increase in contrast)
+        data[i] = Math.min(255, data[i] * 1.2);     // Red
+        data[i + 1] = Math.min(255, data[i + 1] * 1.2); // Green
+        data[i + 2] = Math.min(255, data[i + 2] * 1.2); // Blue
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    // Return the base64-encoded string of the processed image
     return canvas.toDataURL('image/png').split(',')[1];
 }
 
