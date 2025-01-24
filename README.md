@@ -1,4 +1,4 @@
-# Moodle_Auto_Verify
+# Moodle_Auto_Captcha
 
 #### This is an Chrome extension, it helps you fill in the verification code when you logging into [Moodle](https://moodle.ncku.edu.tw/).
 -------------------------------
