@@ -143,14 +143,8 @@ const image = document.getElementById('imgcode');
 if (image) {
     if (image.complete) {
         recognize_and_fill(image);
-    } else {
-        image.addEventListener('load', () => {
-            recognize_and_fill(image);
-        });
     }
-    image.addEventListener('click', () => {
-        image.addEventListener('load', () => {
-            recognize_and_fill(image);
-        });
+    image.addEventListener('load', () => {
+        recognize_and_fill(image);
     });
 }
