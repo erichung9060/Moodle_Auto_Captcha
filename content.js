@@ -1,7 +1,5 @@
-// ----------------------configuration------------------------------
-const Gemini_API_KEY = 'Your_Gooele_Gemini_API_Key';
-const Cloud_Vision_API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
-// -----------------------------------------------------------------
+let Gemini_API_KEY = ''
+let Cloud_Vision_API_KEY = ''
 
 function getBase64Image(image) {
     const canvas = document.createElement('canvas');
@@ -73,7 +71,7 @@ async function recognize_captcha_by_Cloud_Vision_API(image) {
     if (Verification_Code.length != 4) {
         Verification_Code = recognizedText.match(/\d+/g).join('');
     }
-    
+
     return Verification_Code
 }
 
@@ -113,12 +111,25 @@ async function recognize_captcha_by_Gemini(image) {
     return Verification_Code
 }
 
+async function initApiKeys() {
+    return new Promise((resolve) => {
+        chrome.storage.sync.get(['geminiApiKey', 'cloudVisionApiKey'], (result) => {
+            Gemini_API_KEY = result.geminiApiKey || '';
+            Cloud_Vision_API_KEY = result.cloudVisionApiKey || '';
+            resolve();
+        });
+    });
+}
+
 async function recognize_and_fill(image) {
-    var Verification_Code = ""
-    if (Gemini_API_KEY != 'Your_Gooele_Gemini_API_Key') {
-        Verification_Code = await recognize_captcha_by_Gemini(image);
-    } else if (Cloud_Vision_API_KEY != 'Your_Gooele_Cloud_Vision_AI_API_Key') {
+    await initApiKeys();
+
+    var Verification_Code = ''
+
+    if (Cloud_Vision_API_KEY != '') {
         Verification_Code = await recognize_captcha_by_Cloud_Vision_API(image);
+    } else if (Gemini_API_KEY != '') {
+        Verification_Code = await recognize_captcha_by_Gemini(image);
     } else {
         console.error('API_KEY is not defined');
         return;
@@ -138,8 +149,8 @@ if (image) {
         });
     }
     image.addEventListener('click', () => {
-        setTimeout(() => {
+        image.addEventListener('load', () => {
             recognize_and_fill(image);
-        }, 500);
+        });
     });
 }
