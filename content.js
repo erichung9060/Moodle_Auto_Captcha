@@ -57,22 +57,27 @@ async function recognize_captcha_by_Cloud_Vision_API(image) {
             ]
         })
     })
-    const data = await response.json();
-    console.log(data)
+    try {
+        const data = await response.json();
+        console.log(data)
+        
+        let Verification_Code = '';
+        const recognizedText = data.responses[0].textAnnotations[0]?.description;
+        const lines = recognizedText.split('\n');
+        for (const line of lines) {
+            Verification_Code = line.match(/\d+/g).join('');
+            if (Verification_Code.length == 4) break;
+        }
 
-    let Verification_Code = '';
-    const recognizedText = data.responses[0].textAnnotations[0]?.description;
-    const lines = recognizedText.split('\n');
-    for (const line of lines) {
-        Verification_Code = line.match(/\d+/g).join('');
-        if (Verification_Code.length == 4) break;
+        if (Verification_Code.length != 4) {
+            Verification_Code = recognizedText.match(/\d+/g).join('');
+        }
+
+        return Verification_Code
+    } catch (error) {
+        console.error("The API key is not valid or out of quota. Please check your API key")
+        return null;
     }
-
-    if (Verification_Code.length != 4) {
-        Verification_Code = recognizedText.match(/\d+/g).join('');
-    }
-
-    return Verification_Code
 }
 
 async function recognize_captcha_by_Gemini(image) {
@@ -104,11 +109,16 @@ async function recognize_captcha_by_Gemini(image) {
         body: JSON.stringify(body)
     });
 
-    const data = await response.json();
-    console.log(data)
+    try {
+        const data = await response.json();
+        console.log(data)
 
-    const Verification_Code = data.candidates[0].content.parts[0].text.trim()
-    return Verification_Code
+        const Verification_Code = data.candidates[0].content.parts[0].text.trim()
+        return Verification_Code
+    } catch (error) {
+        console.error("The API key is not valid or out of quota. Please check your API key")
+        return null;
+    }
 }
 
 async function initApiKeys() {
@@ -124,16 +134,15 @@ async function initApiKeys() {
 async function recognize_and_fill(image) {
     await initApiKeys();
 
-    var Verification_Code = ''
-
-    if (Cloud_Vision_API_KEY != '') {
-        Verification_Code = await recognize_captcha_by_Cloud_Vision_API(image);
-    } else if (Gemini_API_KEY != '') {
-        Verification_Code = await recognize_captcha_by_Gemini(image);
-    } else {
-        console.error('API_KEY is not defined');
+    if(Cloud_Vision_API_KEY == '' && Gemini_API_KEY == ''){
+        console.error("Please click the extension icon and set your API key.");
         return;
     }
+
+    var Verification_Code = Cloud_Vision_API_KEY != '' ? 
+        await recognize_captcha_by_Cloud_Vision_API(image) : 
+        await recognize_captcha_by_Gemini(image);
+
     const inputField = document.getElementById('reg_vcode');
     inputField.value = Verification_Code;
 }
