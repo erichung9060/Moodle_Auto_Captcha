@@ -1,6 +1,6 @@
 // ----------------------configuration------------------------------
 const Gemini_API_KEY = 'Your_Gooele_Gemini_API_Key';
-const Cloud_Vision_API_KEY = 'AIzaSyCUcVYssZ9Xd2FPnL86BH42Wx-YOb3k0AI';
+const Cloud_Vision_API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
 // -----------------------------------------------------------------
 
 function getBase64Image(image) {
