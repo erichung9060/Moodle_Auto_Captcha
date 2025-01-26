@@ -1,12 +1,12 @@
 // ----------------------configuration------------------------------
 const Gemini_API_KEY = 'Your_Gooele_Gemini_API_Key';
-const Cloud_Vision_API_KEY = 'Your_Gooele_Cloud_Vision_AI_API_Key';
+const Cloud_Vision_API_KEY = 'AIzaSyCUcVYssZ9Xd2FPnL86BH42Wx-YOb3k0AI';
 // -----------------------------------------------------------------
 
-function getBase64Image(img) {
+function getBase64Image(image) {
     const canvas = document.createElement('canvas');
     const width = 800; // Resize width
-    const aspectRatio = img.height / img.width; // Maintain aspect ratio
+    const aspectRatio = image.height / image.width; // Maintain aspect ratio
     const height = width * aspectRatio;
 
     canvas.width = width;
@@ -14,7 +14,7 @@ function getBase64Image(img) {
     const ctx = canvas.getContext('2d');
 
     // Draw the resized image
-    ctx.drawImage(img, 0, 0, width, height);
+    ctx.drawImage(image, 0, 0, width, height);
 
     // Apply sharpening filter (simple unsharp mask simulation)
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -33,8 +33,8 @@ function getBase64Image(img) {
     return canvas.toDataURL('image/png').split(',')[1];
 }
 
-async function recognize_captcha_by_Cloud_Vision_API(img) {
-    let base64Image = getBase64Image(img)
+async function recognize_captcha_by_Cloud_Vision_API(image) {
+    let base64Image = getBase64Image(image)
     const response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${Cloud_Vision_API_KEY}`, {
         method: 'POST',
         headers: {
@@ -77,8 +77,8 @@ async function recognize_captcha_by_Cloud_Vision_API(img) {
     return Verification_Code
 }
 
-async function recognize_captcha_by_Gemini(img) {
-    let base64Image = getBase64Image(img)
+async function recognize_captcha_by_Gemini(image) {
+    let base64Image = getBase64Image(image)
     const prompt = 'This is a captcha image. Tell me what numbers or letters are in this image. The captcha is 4 characters long. Just tell me the captcha, no other characters.'
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${Gemini_API_KEY}`;
 
@@ -113,12 +113,12 @@ async function recognize_captcha_by_Gemini(img) {
     return Verification_Code
 }
 
-async function recognize_and_fill(img) {
+async function recognize_and_fill(image) {
     var Verification_Code = ""
     if (Gemini_API_KEY != 'Your_Gooele_Gemini_API_Key') {
-        Verification_Code = await recognize_captcha_by_Gemini(img);
+        Verification_Code = await recognize_captcha_by_Gemini(image);
     } else if (Cloud_Vision_API_KEY != 'Your_Gooele_Cloud_Vision_AI_API_Key') {
-        Verification_Code = await recognize_captcha_by_Cloud_Vision_API(img);
+        Verification_Code = await recognize_captcha_by_Cloud_Vision_API(image);
     } else {
         console.error('API_KEY is not defined');
         return;
@@ -127,13 +127,19 @@ async function recognize_and_fill(img) {
     inputField.value = Verification_Code;
 }
 
-const img = document.getElementById('imgcode');
-if (img) {
-    if (img.complete) {
-        recognize_and_fill(img);
+const image = document.getElementById('imgcode');
+
+if (image) {
+    if (image.complete) {
+        recognize_and_fill(image);
     } else {
-        img.addEventListener('load', () => {
-            recognize_and_fill(img);
+        image.addEventListener('load', () => {
+            recognize_and_fill(image);
         });
     }
+    image.addEventListener('click', () => {
+        setTimeout(() => {
+            recognize_and_fill(image);
+        }, 500);
+    });
 }
