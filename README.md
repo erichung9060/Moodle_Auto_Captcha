@@ -10,12 +10,8 @@
 
 ## Gemini vs. Google Cloud Vision
 
-### Gemini
-- Simple to create an API key
-- Slower respone time
-- More accurate
-
-### Google Cloud Vision
-- Complex to create an API key
-- Faster respone time
-- Possible incorrect answers
+|               | Gemini                              | Google Cloud Vision               |
+|----------------------|-------------------------------------|------------------------------------|
+| Response Time        | Slower    | Faster      |
+| API Key Setup        | Simple  | Complex   |
+| Accuracy             | High    | Low       |
