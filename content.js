@@ -4,30 +4,16 @@ let Cloud_Vision_API_KEY = ''
 function getBase64Image(image) {
     const canvas = document.createElement('canvas');
     const width = 800; // Resize width
-    const aspectRatio = image.height / image.width; // Maintain aspect ratio
+    const aspectRatio = image.height / image.width;
     const height = width * aspectRatio;
-
+    
     canvas.width = width;
     canvas.height = height;
+    
     const ctx = canvas.getContext('2d');
-
-    // Draw the resized image
     ctx.drawImage(image, 0, 0, width, height);
-
-    // Apply sharpening filter (simple unsharp mask simulation)
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-
-    for (let i = 0; i < data.length; i += 4) {
-        // Example of sharpening (basic increase in contrast)
-        data[i] = Math.min(255, data[i] * 1.2);     // Red
-        data[i + 1] = Math.min(255, data[i + 1] * 1.2); // Green
-        data[i + 2] = Math.min(255, data[i + 2] * 1.2); // Blue
-    }
-
-    ctx.putImageData(imageData, 0, 0);
-
-    // Return the base64-encoded string of the processed image
+    
+    // Convert directly to base64 without any processing
     return canvas.toDataURL('image/png').split(',')[1];
 }
 
@@ -82,7 +68,7 @@ async function recognize_captcha_by_Cloud_Vision_API(image) {
 
 async function recognize_captcha_by_Gemini(image) {
     let base64Image = getBase64Image(image)
-    const prompt = 'This is a captcha image. Tell me what numbers or letters are in this image. The captcha is 4 characters long. Just tell me the captcha, no other characters.'
+    const prompt = 'Please analyze this CAPTCHA image and extract the 4-digit numeric code. The image contains colorful digits on a white background with some noise/distortion. Return only the numeric digits without any additional text or explanation.'
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${Gemini_API_KEY}`;
 
     const body = {
