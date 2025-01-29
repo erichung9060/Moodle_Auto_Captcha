@@ -14,4 +14,4 @@
 |----------------------|-------------------------------------|------------------------------------|
 | Response Time        | Slower    | Faster      |
 | API Key Setup        | Simple  | Complex   |
-| Accuracy             | Higher    | Lower       |
+| Accuracy             | 98%    | 70%       |
