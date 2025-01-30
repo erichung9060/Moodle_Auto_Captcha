@@ -23,5 +23,8 @@
     ],
     "action": {
         "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
     }
 }
