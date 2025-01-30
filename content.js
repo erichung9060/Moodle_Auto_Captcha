@@ -109,7 +109,7 @@ async function recognize_captcha_by_Gemini(image) {
 
 async function initApiKeys() {
     return new Promise((resolve) => {
-        chrome.storage.sync.get(['geminiApiKey', 'cloudVisionApiKey'], (result) => {
+        chrome.storage.local.get(['geminiApiKey', 'cloudVisionApiKey'], (result) => {
             Gemini_API_KEY = result.geminiApiKey || '';
             Cloud_Vision_API_KEY = result.cloudVisionApiKey || '';
             resolve();
