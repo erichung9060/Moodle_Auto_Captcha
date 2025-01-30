@@ -1,6 +1,6 @@
-chrome.storage.local.get(['geminiApiKey', 'cloudVisionApiKey'], (result) => {
-    document.getElementById('geminiKey').value = result.geminiApiKey || '';
-    document.getElementById('cloudVisionKey').value = result.cloudVisionApiKey || '';
+chrome.storage.local.get(['Gemini_API_KEY', 'Cloud_Vision_API_KEY'], (result) => {
+    document.getElementById('geminiKey').value = result.Gemini_API_KEY || '';
+    document.getElementById('cloudVisionKey').value = result.Cloud_Vision_API_KEY || '';
 });
 
 
@@ -9,8 +9,8 @@ document.getElementById('saveKeys').addEventListener('click', () => {
     const cloudVisionKey = document.getElementById('cloudVisionKey').value;
 
     chrome.storage.local.set({
-        geminiApiKey: geminiKey,
-        cloudVisionApiKey: cloudVisionKey
+        Gemini_API_KEY: geminiKey,
+        Cloud_Vision_API_KEY: cloudVisionKey
     }, () => {
         window.close();
     });

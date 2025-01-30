@@ -109,9 +109,9 @@ async function recognize_captcha_by_Gemini(image) {
 
 async function initApiKeys() {
     return new Promise((resolve) => {
-        chrome.storage.local.get(['geminiApiKey', 'cloudVisionApiKey'], (result) => {
-            Gemini_API_KEY = result.geminiApiKey || '';
-            Cloud_Vision_API_KEY = result.cloudVisionApiKey || '';
+        chrome.storage.local.get(['Gemini_API_KEY', 'Cloud_Vision_API_KEY'], (result) => {
+            Gemini_API_KEY = result.Gemini_API_KEY || '';
+            Cloud_Vision_API_KEY = result.Cloud_Vision_API_KEY || '';
             resolve();
         });
     });
