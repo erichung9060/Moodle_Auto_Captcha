@@ -30,8 +30,11 @@ async function recognize_captcha_by_Cloud_Vision_API(base64Image) {
         const data = await response.json();
         console.log(data)
 
+        if (data.error) return {Success: false, error: data.error.message}
+        
         let Verification_Code = '';
         const recognizedText = data.responses[0].textAnnotations[0]?.description;
+        
         const lines = recognizedText.split('\n');
         for (const line of lines) {
             Verification_Code = line.match(/\d+/g).join('');
@@ -42,15 +45,15 @@ async function recognize_captcha_by_Cloud_Vision_API(base64Image) {
             Verification_Code = recognizedText.match(/\d+/g).join('');
         }
 
-        return Verification_Code
+        return {Success: true, Verification_Code: Verification_Code}
     } catch (error) {
-        return null;
+        return {Success: false, error: error}
     }
 }
 
 async function recognize_captcha_by_Gemini(base64Image) {
     const prompt = 'Please analyze this CAPTCHA image and extract the 4-digit numeric code. The image contains colorful digits on a white background with some noise/distortion. Return only the numeric digits without any additional text or explanation.'
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${Gemini_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${Gemini_API_KEY}`;
 
     const body = {
         contents: [
@@ -79,11 +82,12 @@ async function recognize_captcha_by_Gemini(base64Image) {
     try {
         const data = await response.json();
         console.log(data)
+        if (data.error) return {Success: false, error: data.error.message}
 
         const Verification_Code = data.candidates[0].content.parts[0].text.trim()
-        return Verification_Code
+        return {Success: true, Verification_Code: Verification_Code}
     } catch (error) {
-        return null;
+        return {Success: false, error: error}
     }
 }
 
@@ -113,12 +117,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 return;
             }
 
-            const Verification_Code = Cloud_Vision_API_KEY !== '' ?
+            const response = Cloud_Vision_API_KEY !== '' ?
                 await recognize_captcha_by_Cloud_Vision_API(request.image) :
                 await recognize_captcha_by_Gemini(request.image);
             
-            if(Verification_Code) sendResponse({Verification_Code: Verification_Code});
-            else sendResponse({error: "The API key is not valid or out of quota. Please check your API key"});
+            if(response.Success) sendResponse({Success: true, Verification_Code: response.Verification_Code});
+            else sendResponse({Success: false, error: response.error});
         })();
         return true;
     }

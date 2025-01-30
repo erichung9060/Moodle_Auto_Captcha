@@ -26,7 +26,7 @@ async function recognize_and_fill(image) {
     });
 
     const inputField = document.getElementById('reg_vcode');
-    if (response.Verification_Code) {
+    if (response.Success) {
         inputField.value = response.Verification_Code;
     } else {
         console.error(response.error);
