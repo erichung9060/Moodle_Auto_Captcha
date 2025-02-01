@@ -53,7 +53,7 @@ async function recognize_captcha_by_Cloud_Vision_API(base64Image) {
 
 async function recognize_captcha_by_Gemini(base64Image) {
     const prompt = 'Please analyze this CAPTCHA image and extract the 4-digit numeric code. The image contains colorful digits on a white background with some noise/distortion. Return only the numeric digits without any additional text or explanation.'
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${Gemini_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${Gemini_API_KEY}`;
 
     const body = {
         contents: [
