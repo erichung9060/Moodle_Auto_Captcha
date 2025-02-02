@@ -16,8 +16,12 @@ This is an Chrome extension, it helps you fill in the verification code when you
 | API Key Setup        | Simple  | Complex   |
 | Accuracy             | Higher    | Lower       |
 
-## Gemini
-https://github.com/user-attachments/assets/6fce6287-8791-4c0c-9a8c-f75028cbb251
+## Demo Video
 
-## Google Cloud Vision AI
+### Using Google Cloud Vision AI
+
 https://github.com/user-attachments/assets/5df76a8c-4a96-42a5-8969-ccbc4a2e8b64
+
+### Using Gemini
+
+https://github.com/user-attachments/assets/6fce6287-8791-4c0c-9a8c-f75028cbb251
