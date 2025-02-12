@@ -113,8 +113,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.action === 'recognizeCaptcha') {
         (async () => {
             if (Cloud_Vision_API_KEY === '' && Gemini_API_KEY === '') {
-                sendResponse({error: "Please click the extension icon and set your API key."});
-                return;
+                await new Promise((resolve) => {
+                    chrome.storage.local.get(['Gemini_API_KEY', 'Cloud_Vision_API_KEY'], (result) => {
+                        Gemini_API_KEY = result.Gemini_API_KEY || '';
+                        Cloud_Vision_API_KEY = result.Cloud_Vision_API_KEY || '';
+                        console.log("init api key");
+                        resolve();
+                    });
+                });
+
+                if (Cloud_Vision_API_KEY === '' && Gemini_API_KEY === '') {
+                    sendResponse({Success: false, error: "Please click the extension icon and set your API key."});
+                    return;
+                }
             }
 
             const response = Cloud_Vision_API_KEY !== '' ?
@@ -126,10 +137,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         })();
         return true;
     }
-});
-
-chrome.storage.local.get(['Gemini_API_KEY', 'Cloud_Vision_API_KEY'], (result) => {
-    Gemini_API_KEY = result.Gemini_API_KEY || '';
-    Cloud_Vision_API_KEY = result.Cloud_Vision_API_KEY || '';
-    console.log("init api key")
 });
